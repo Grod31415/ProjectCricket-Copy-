@@ -50,6 +50,9 @@
 
         <script>
 
+
+
+            
             
             /* 1) Where the Flask API is running */
             const API_BASE = "http://127.0.0.1:8888";
@@ -83,6 +86,31 @@
             }
           });
 
+            /* 3) Save the job ID, go to loading */
+            const API_BASE = "http://127.0.0.1:8888";
+            document.getElementById('submitBtn').addEventListener('click', async () => {
+              const box = document.getElementById('description');
+              const prompt = (box?.value || '').trim();
+                if (!prompt) {
+            const missing = document.getElementById('missingdesc');
+            if (missing) missing.style.display = 'flex';
+            return;
+              }
+          try {
+            const r = await fetch(`${API_BASE}/api/generate`, {
+              method: 'POST',
+              headers: {'Content-Type':'application/json'},
+              body: JSON.stringify({ prompt, difficulty:'normal' })
+            });
+            const data = await r.json();
+            if (!r.ok) { alert(data.error || 'Failed to start'); return; }
+            sessionStorage.setItem('job_id', data.job_id);
+            window.location.href = 'Loading.html';
+          } catch (e) { alert('Network error'); }
+        });
+
+
+            
             
             window.onload = function(){
                 if(sessionStorage.getItem('suppressDisclaimerOnReturn') === '1'){
