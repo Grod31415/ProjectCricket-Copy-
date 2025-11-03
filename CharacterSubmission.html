@@ -49,6 +49,12 @@
          </div>
 
         <script>
+
+            
+            /* 1) Where the Flask API is running */
+            const API_BASE = "http://127.0.0.1:8888";
+
+            
             window.onload = function(){
                 if(sessionStorage.getItem('suppressDisclaimerOnReturn') === '1'){
                     sessionStorage.removeItem('suppressDisclaimerOnReturn');
