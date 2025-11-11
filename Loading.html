@@ -203,6 +203,25 @@
 
 
 
+
+        /* Navigate to CharacterStats.html */
+        <script>
+  // When user confirms, go to CharacterStats (NOT Simulation)
+  document.getElementById('confirmGoNext').addEventListener('click', function (e) {
+    e.preventDefault();
+    window.location.href = 'CharacterStats.html';
+  });
+
+  // Optional: clicking the dark backdrop closes the overlay
+  document.getElementById('goNextConfirm').addEventListener('click', function (e) {
+    if (e.target.id === 'goNextConfirm') this.style.display = 'none';
+  });
+</script>
+        /* end */
+
+
+
+
         /* Poll for job completion start */
     <script>
   if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
@@ -237,6 +256,7 @@
     </body>
 
 </html>
+
 
 
 
