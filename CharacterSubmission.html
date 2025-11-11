@@ -179,18 +179,6 @@
             }
         }
 
-            submitBtn.addEventListener('click', function(){
-            let description = descriptionBox.value;
-            if(description.trim() === ''){
-                document.getElementById('missingdesc').style.display = 'flex';
-                return;
-            }
-            descriptionBox.disabled = true;
-            window.location.href = 'CharacterStats.html';
-            clearInterval(countdown);
-            timerRunning = false;
-        });
-
         resetBtn.addEventListener('click', function(){
             clearInterval(countdown);
             timeleft = countdownTime;
