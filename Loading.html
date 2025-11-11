@@ -204,7 +204,7 @@
 
 
 
-        /* Navigate to CharacterStats.html */
+        /* Go Next overlay code */
         <script>
   // When user confirms, go to CharacterStats (NOT Simulation)
   document.getElementById('confirmGoNext').addEventListener('click', function (e) {
@@ -219,6 +219,58 @@
 </script>
         /* end */
 
+        /* switch between Go Next leading to CharacterStats or Simulation */
+        <script>
+  if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
+
+  // Read desired next step
+  const NEXT = sessionStorage.getItem('next') || 'character-stats';
+
+  // Wire "Go Next" → CharacterStats OR Simulation based on NEXT
+  const goNextBtn = document.getElementById('goNextBtn');
+  const goNextConfirm = document.getElementById('goNextConfirm');
+  const confirmGoNext = document.getElementById('confirmGoNext');
+
+  if (goNextBtn && goNextConfirm && confirmGoNext) {
+    goNextBtn.addEventListener('click', () => goNextConfirm.style.display = 'flex');
+    confirmGoNext.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = (NEXT === 'character-stats') ? 'CharacterStats.html' : 'Simulation.html';
+      window.location.href = target;
+    });
+  }
+
+  // Poll the backend ONLY when we're headed to CharacterStats (first pass)
+  const jobId = sessionStorage.getItem('job_id');
+  async function poll(){
+    try {
+      const r = await fetch(`${API_BASE}/api/jobs/${jobId}`, { cache: 'no-store' });
+      const data = await r.json();
+      if (data.status === 'done') {
+        sessionStorage.setItem('gen_result', JSON.stringify(data.result));
+        window.location.href = 'CharacterStats.html';
+        return;
+      }
+      if (data.status === 'error') {
+        alert('Generation failed: ' + (data.error || 'unknown error'));
+        return;
+      }
+      setTimeout(poll, 1200);
+    } catch {
+      setTimeout(poll, 1500);
+    }
+  }
+
+  // Start polling only on the first visit (CharacterSubmission → Loading)
+  if (NEXT === 'character-stats') {
+    if (!jobId) { window.location.href = 'CharacterSubmission.html'; }
+    poll();
+  }
+  // If NEXT === 'simulation', do NOT poll; user will click Go Next to proceed.
+</script>
+        /* end */
+
+        
 
 
 
@@ -258,6 +310,7 @@
     </body>
 
 </html>
+
 
 
 
