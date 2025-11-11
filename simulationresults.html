@@ -45,9 +45,22 @@
             document.getElementById('nextLevelbtn').addEventListener('click', function(){
                 document.getElementById('nextLevelConfirm').style.display = 'flex';
             });
-            document.getElementById('confirmNextLevel').addEventListener('click', function(){
-                window.location.href = 'Loading.html';
-            });
+
+
+
+
+            /* New */
+            document.getElementById('confirmNextLevel').addEventListener('click', function(e){
+    e.preventDefault();
+    sessionStorage.setItem('next', 'simulation');  // tell Loading to go to Simulation next
+    window.location.href = 'Loading.html';
+});
+            /* End */
+
+
+
+            
+            
             document.getElementById('restartbtn').addEventListener('click', function(){
                 document.getElementById('restartConfirm').style.display = 'flex';
             });
@@ -62,4 +75,5 @@
     </body>
 
 </html>
+
 
