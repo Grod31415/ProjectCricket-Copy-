@@ -188,4 +188,36 @@
             });
         </script>
     </body>
+
+
+    
+    /* Poll for job completion start */
+    <script>
+  if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
+
+  const jobId = sessionStorage.getItem('job_id');
+  if (!jobId) { location.href = 'CharacterSubmission.html'; }
+
+  async function poll() {
+    try {
+      const r = await fetch(`${API_BASE}/api/jobs/${jobId}`);
+      const data = await r.json();
+      if (data.status === 'done') {
+        sessionStorage.setItem('gen_result', JSON.stringify(data.result));
+        location.href = 'CharacterStats.html';
+      } else if (data.status === 'error') {
+        alert('Generation failed: ' + (data.error || 'unknown error'));
+      } else {
+        setTimeout(poll, 1200);
+      }
+    } catch (e) {
+      setTimeout(poll, 1500); /* brief retry on network hiccup */
+    }
+  }
+  poll();
+</script>
+    /* End */
+
+    
+
 </html>
