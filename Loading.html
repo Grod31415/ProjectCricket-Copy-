@@ -107,6 +107,21 @@
             }
         </script>
 
+
+
+        
+        
+        /* New Added */
+        <script>
+        /* after the upload() function */
+        document.addEventListener('DOMContentLoaded', () => upload());
+        </script>
+        /* End */
+
+
+
+        
+
         <script>
         (function(){
             // Random background selector (keeps behavior but optional)
@@ -184,14 +199,14 @@
                 document.getElementById('goNextConfirm').style.display = 'flex';
             });
             document.getElementById('confirmGoNext').addEventListener('click', function(){
-                window.location.href = 'Simulation.html';
+                window.location.href = 'window.location.href = 'CharacterStats.html';            /* Altered*/
             });
         </script>
-    </body>
 
 
-    
-    /* Poll for job completion start */
+
+
+        /* Poll for job completion start */
     <script>
   if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
 
@@ -218,6 +233,11 @@
 </script>
     /* End */
 
-    
+
+
+
+        
+    </body>
 
 </html>
+
