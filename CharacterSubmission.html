@@ -82,6 +82,7 @@
                 return;
             }
             sessionStorage.setItem('job_id', data.job_id);
+            sessionStorage.setItem('next', 'character-stats');
             window.location.href = 'Loading.html';
             } catch (e) {
               alert('Network error starting generation');
