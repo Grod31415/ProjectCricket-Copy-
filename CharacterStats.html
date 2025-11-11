@@ -46,7 +46,7 @@
                 <h2>Confirm Submission</h2>
                 <p>Are you sure you want to confirm this character? Once confirmed, you will not be able to make further changes and will be unable to go back.</p>
                 <button onclick="document.getElementById('confirmsubmitPopup').style.display='none';">Cancel</button>
-                <button onclick="window.location.href='Loading.html';">Confirm</button>
+                <button id="confirmYes">Confirm</button>
             </div>
         </div>
         <aside class="panel panel--top-right" aria-label="Character stats and image">
@@ -122,11 +122,25 @@
                 showsubmitpopup();
             };
         </script>
-    </body>
 
 
 
-    /* Addition */
+
+        /* Addition */
+        <script>
+  // When the user confirms the character, next stop is Simulation.
+  document.getElementById('confirmYes')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    sessionStorage.setItem('next', 'simulation');
+    window.location.href = 'Loading.html';
+  });
+</script>
+        /* End */
+
+
+        
+
+        /* Addition */
     <script>
   if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
 
@@ -174,6 +188,12 @@
   }
 </script>
     /* End */
+
+
+
+
+        
+    </body>
 
 
     
