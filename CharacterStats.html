@@ -84,6 +84,9 @@
             <div style="width:98%; text-align:center;">
                 <div class="panel-title">SKILLS</div>
                 <div class="single-line" style="color:#093049; opacity:0.95; margin-top:6px;">Add skill descriptions.</div>
+                
+                <ul id="abilities"></ul>
+                
                 <div class="panel-buttons" style="margin-top:12px; display:flex; gap:12px; justify-content:center;">
                     <button id="backButton">Return to Character Submission Page</button>
                     <button id="submitBtn">Confirm character</button>
@@ -130,26 +133,46 @@
   const raw = sessionStorage.getItem('gen_result');
   if (!raw) { location.href = 'CharacterSubmission.html'; }
   const payload = JSON.parse(raw);
+  const s = payload.stats || {};
 
-  // If backend gave a relative path ("/static/gen/..."), prefix API_BASE
+  // Map backend stats -> UI fields
+  const hp  = Math.round(s.vitality ?? 0);
+  const mp  = Math.round(s.intellect ?? 0);
+  const atk = Math.round(s.strength ?? 0);
+  const defv = (s.vitality ?? 0);
+  const defs = (s.strength ?? 0);
+  const def = Math.round((defv + defs) / 2); // or use defv alone if you prefer
+  const agi = Math.round(s.agility ?? 0);
+  const luk = Math.round(s.luck ?? 0);
+
+  // Fill elements if present
+  const setText = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(val);
+  };
+
+  setText('HP',  hp);
+  setText('MP',  mp);
+  setText('ATK', atk);
+  setText('DEF', def);
+  setText('AGI', agi);
+  setText('LUK', luk);
+
+  // Image (unchanged from earlier instructions)
   const imgUrl = payload.image_url?.startsWith('http')
     ? payload.image_url
     : `${API_BASE}${payload.image_url}`;
-
   const portrait = document.getElementById('portrait');
   if (portrait) portrait.src = imgUrl;
 
-  const stats = document.getElementById('stats');
-  if (stats) stats.textContent = JSON.stringify(payload.stats, null, 2);
-
+  // Abilities list (optional)
   const abilities = document.getElementById('abilities');
-  if (abilities) {
-    abilities.innerHTML = (payload.abilities || [])
+  if (abilities && Array.isArray(payload.abilities)) {
+    abilities.innerHTML = payload.abilities
       .map(a => `<li><strong>${a.name}</strong> — ${a.description} (Power ${a.power})</li>`)
       .join('');
   }
 </script>
-
     /* End */
 
 
