@@ -27,7 +27,7 @@
 
 
         /* Character image */
-        <img id="portrait" alt="Character portrait"/>
+        <img id="portrait" alt="Character portrait" style="max-width: 256px;" />
 
 
         
@@ -53,11 +53,29 @@
             <div style="display:flex; gap:12px; align-items:flex-start;">
                    <div class="panel stats">
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/HP.png" alt="Health">
+                    
+                    <pre id="HP"></pre>
+                       
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/MP.png" alt="Mana">
+
+                    <pre id="MP"></pre>
+                       
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/ATK.png" alt="Attack">
+
+                    <pre id="ATK"></pre>
+                       
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/DEF.png" alt="Defense">
+
+                    <pre id="DEF"></pre>
+                       
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/AGI.png" alt="Speed">
+
+                    <pre id="AGI"></pre>
+                       
                     <img class="stat-icon" src="https://raw.github.com/oneslinky/ProjectCricket/8730df2a31fbdbc0f0a4c60121ff8c76fc12ef6e/assests/Stat%20Icons/LUK.png" alt="Luck">
+
+                    <pre id="LUK"></pre>
+                       
                 </div>
             </div>
         </aside>
@@ -102,4 +120,38 @@
             };
         </script>
     </body>
+
+
+
+    /* Addition */
+    <script>
+  if (!window.API_BASE) window.API_BASE = "http://127.0.0.1:8888";
+
+  const raw = sessionStorage.getItem('gen_result');
+  if (!raw) { location.href = 'CharacterSubmission.html'; }
+  const payload = JSON.parse(raw);
+
+  // If backend gave a relative path ("/static/gen/..."), prefix API_BASE
+  const imgUrl = payload.image_url?.startsWith('http')
+    ? payload.image_url
+    : `${API_BASE}${payload.image_url}`;
+
+  const portrait = document.getElementById('portrait');
+  if (portrait) portrait.src = imgUrl;
+
+  const stats = document.getElementById('stats');
+  if (stats) stats.textContent = JSON.stringify(payload.stats, null, 2);
+
+  const abilities = document.getElementById('abilities');
+  if (abilities) {
+    abilities.innerHTML = (payload.abilities || [])
+      .map(a => `<li><strong>${a.name}</strong> — ${a.description} (Power ${a.power})</li>`)
+      .join('');
+  }
+</script>
+
+    /* End */
+
+
+    
 </html>
